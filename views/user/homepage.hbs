@@ -1,0 +1,273 @@
+<section>
+    <div class="container-fluid">
+        <input type="text" id="user_id" value="{{user._id}}" hidden>
+        <div class="row" style="min-height: 100vh;">
+            <div class="col-4 bg-light">
+                <div class="row p-2 d-flex align-items-center">
+                    <div class="col-auto">
+                        {{#if user.profile_picture}}
+                        <img src="/images/Profile pictures/IMG{{uppercase user._id}}.jpg"
+                            class="img-fluid rounded-circle m-1" style="width: 3rem; height:3rem" alt="">
+                        {{else}}
+                        <img src="/images/Profile pictures/thumbnail.png" class="img-fluid rounded-circle m-1"
+                            style="width: 3rem; height:3rem" alt="">
+                        {{/if}}
+                    </div>
+                    <div class="col">
+                        <h3 class="fw-bold">{{user.user_name}}</h3>
+                    </div>
+                    <div class="col">
+                        <div class="dropdown float-end">
+                            <i class="btn p-2 m-1 small-rounded-buttons material-icons" type="button" id="options"
+                                data-bs-toggle="dropdown" aria-expanded="false">more_vert</i>
+                            <ul class="dropdown-menu dropdown-menu-lg-end p-3 shadow" aria-labelledby="options">
+                                <li><a class="dropdown-item text-secondary" id="li_new_group">New group</a></li>
+                                <li><a class="dropdown-item text-secondary" href="#">Starred messages</a></li>
+                                <li><a class="dropdown-item text-secondary" href="#">Settings</a></li>
+                                <li><a class="dropdown-item text-secondary" href="/logout">Logout</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <div class="col p-0">
+                        <nav>
+                            <div class="nav nav-tabs nav-justified" id="nav-tab" role="tablist">
+                                <a class="nav-link active" id="nav-chats-tab" data-bs-toggle="tab" href="#nav-chats"
+                                    role="tab" aria-controls="nav-home" aria-selected="true">Chats</a>
+                                <a class="nav-link" id="nav-groups-tab" data-bs-toggle="tab" href="#nav-groups"
+                                    role="tab" aria-controls="nav-groups" aria-selected="false">Groups</a>
+                                <a class="nav-link" id="nav-status-tab" data-bs-toggle="tab" href="#nav-status"
+                                    role="tab" aria-controls="nav-status" aria-selected="false">Status</a>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+                <div class="row border-bottom">
+                    <div class="col">
+                        <div class="input-group input-group-sm mb-2">
+                            <span class="input-group-text material-icons d-flex align-items-center">search</span>
+                            <input type="text" class="form-control shadow-none" placeholder="Search or start new chat">
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-content" id="nav-tabContent">
+                    <div class="tab-pane fade show active" id="nav-chats" role="tabpanel"
+                        aria-labelledby="nav-chats-tab">
+                        {{#if other_users}}
+                        {{#each allUsers}}
+                        <a class="text-decoration-none" onclick="get_chat('{{this._id}}')">
+                            <div class="row border-bottom p-2 mb-0 chat">
+                                <div class="col-auto">
+                                    {{#if this.profile_picture}}
+                                    <img src="/images/Profile pictures/IMG{{uppercase this._id}}.jpg"
+                                        class="img-fluid rounded-circle" style="width: 3rem; height:3rem" alt="">
+                                    {{else}}
+                                    <img src="/images/Profile pictures/thumbnail.png" class="img-fluid rounded-circle"
+                                        style="width: 3rem; height:3rem" alt="">
+                                    {{/if}}
+                                </div>
+                                <div class="col">
+                                    <h6 class="fw-bold">{{this.user_name}}</h6>
+                                    <p class="text-muted m-0" id="last_message_{{this._id}}">
+                                        {{this.last_message.messages}}
+                                    </p>
+                                </div>
+                            </div>
+                        </a>
+                        {{/each}}
+                        {{/if}}
+                        </ul>
+                    </div>
+
+                    <div class="tab-pane fade" id="nav-groups" role="tabpanel" aria-labelledby="nav-groups-tab">
+                        <p>clicked profile</p>
+                        <p>clicked profile</p>
+                        <p>clicked profile</p>
+                    </div>
+                    <div class="tab-pane fade" id="nav-status" role="tabpanel" aria-labelledby="nav-status-tab">
+                        <p>clicked contact</p>
+                        <p>clicked contact</p>
+                        <p>clicked contact</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col chat-part" id="chatSideIntro">
+                <div class="d-flex align-items-center justify-content-center" style="height: 100vh;">
+                    <div class="text-center">
+                        <img src="/images/icons/keep connected wifi icon.png" class="img-fluid w-25">
+                        <h1 class="fw-bold">ChatsApp</h1>
+                        <h2>Keep connected & enjoy</h2>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col chat-part position-relative" id="chat_side" style="min-height: 100vh; max-height: 100vh;"
+                hidden>
+                <div class="row border-bottom bg-light d-flex align-items-center p-2">
+                    <div class="col-auto">
+                        <img id="profile_picture" class="img-fluid rounded-circle m-1"
+                            style="width: 2.5rem; height:2.5rem">
+                    </div>
+                    <div class="col">
+                        <h4 id="personal_chat"></h4>
+                    </div>
+                    <div class="col">
+                        <div class="dropdown float-end">
+                            <i class="btn p-2 m-1 small-rounded-buttons material-icons" type="button" id="options"
+                                data-bs-toggle="dropdown" aria-expanded="false">more_vert</i>
+                            <ul class="dropdown-menu dropdown-menu-lg-end p-3 shadow" aria-labelledby="options">
+                                <li><a class="dropdown-item text-secondary" href="#">Contact info</a></li>
+                                <li><a class="dropdown-item text-secondary" href="#">Clear chat</a></li>
+                                <li><a class="dropdown-item text-secondary" href="#">Block chat</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="row pt-4 message_display" id="message_display_div">
+                    <input type="text" id="to_chat_id" hidden>
+                    <input type="text" id="chat_common_id" hidden>
+                    <div class="col">
+                        <ul class="list-group mb-3" id="messages">
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="row position-absolute bottom-0 w-100 border-top bg-light align-self-end p-2"
+                    style="max-height: 10%;">
+                    <div class="col d-flex">
+                        <i id="attach_file"
+                            class="btn btn-outline-primary small-rounded-buttons p-2 material-icons me-1">
+                            attach_file </i>
+                        <i id="emoji" class="btn btn-outline-primary small-rounded-buttons p-2 material-icons me-2">
+                            mood </i>
+                        <form class="d-flex w-100" onsubmit="send_message(event)">
+                            <input type="text" oninput="change_icon_mic_send()" class="form-control shadow-none me-2"
+                                id="message_box" placeholder="Type your message here....">
+                            <button id="send_and_mic"
+                                class="btn shadow-none btn-outline-primary mic-send-button p-2 material-icons">
+                                mic
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div class="modal" id="create_new_group_modal" role="dialog" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">New Group</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-center align-items-center">
+                    <span class="material-icons text-light rounded-circle bg-primary p-2 me-2">
+                        group_add
+                    </span>
+                    <h4>
+                        Add group participants
+                    </h4>
+                </div>
+                <div class="row p-2 justify-content-center" id="added_chats">
+
+                </div>
+                <div class="input-group input-group-sm mb-2">
+                    <span class="input-group-text material-icons d-flex align-items-center">search</span>
+                    <input type="text" class="form-control shadow-none" placeholder="Search chats to add">
+                </div>
+                <hr class="mb-0">
+                {{#each allUsers}}
+
+                <button id="chat_add_group_{{this._id}}" onclick="add_to_group('{{this._id}}','{{this.user_name}}')"
+                    class="btn w-100 rounded-0 d-flex border-bottom p-2 mb-0 chat">
+                    <div class="me-3">
+                        {{#if this.profile_picture}}
+                        <img src="/images/Profile pictures/IMG{{uppercase this._id}}.jpg"
+                            class="img-fluid rounded-circle" style="width: 3rem; height:3rem" alt="">
+                        {{else}}
+                        <img src="/images/Profile pictures/thumbnail.png" class="img-fluid rounded-circle"
+                            style="width: 3rem; height:3rem" alt="">
+                        {{/if}}
+                    </div>
+                    <div>
+                        <h6 class="fw-bold">{{this.user_name}}</h6>
+                    </div>
+                </button>
+
+                {{/each}}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary rounded-circle p-0">
+                    <span class="material-icons m-2">
+                        arrow_forward
+                    </span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="socket.io/socket.io.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script>
+
+
+
+
+
+
+
+    let socket = io()
+    let user_id = $("#user_id").val().toLowerCase()
+
+    socket.emit("connected", user_id)
+    function send_message(e) {
+        e.preventDefault()
+        let common_id = $("#chat_common_id").val()
+        let chat_id = $("#to_chat_id").val()
+        let message = $("#message_box").val()
+        if (message) {
+            socket.emit('chat message', {
+                message: message,
+                from_id: user_id,
+                to_id: chat_id
+            })
+            $("#messages").append('<li class="list-group-item d-flex mb-1 rounded-2 p-2" style="margin-left: auto;">' + message + '</li>');
+            $("#message_box").val('')
+            $("#send_and_mic").html('mic')
+            $("#last_message_" + chat_id).html(message)
+            $.ajax({
+                url: '/save_message',
+                data: {
+                    message: {
+                        message: message,
+                        sent_by: user_id,
+                        recieved_by: chat_id,
+                        sent_time: new Date(),
+                        
+                    },
+                    chat_common_id: common_id
+                },
+                method: 'post'
+            })
+        }
+
+    }
+
+
+
+
+    socket.on('send_message', function (message) {
+        $("#messages").append('<li class="list-group-item d-flex mb-1 rounded-2 p-2">' + message + '</li>');
+    });
+
+</script>
